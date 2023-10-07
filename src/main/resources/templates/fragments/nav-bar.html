@@ -1,0 +1,23 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragments="nav-bar">
+    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+        <div class="position-sticky pt-3">
+            <ul class="nav flex-column">
+                <li>
+                    <a class='dropdown-trigger btn waves-effect waves-light' href='#' data-target='dropdown1'>Master Data</a>
+                    <!-- Dropdown Structure -->
+                    <ul id='dropdown1' class='dropdown-content'>
+                        <li><a data-bs-toggle="modal" data-bs-target="#supplierModal">Supplier</a></li>
+                        <li><a data-bs-toggle="modal" data-bs-target="#locationModal">Location</a></li>
+                        <li><a data-bs-toggle="modal" data-bs-target="#categoryModal">Category</a></li>
+                        <li><a data-bs-toggle="modal" data-bs-target="#manufactureModal">Manufacture</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="btn waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#productDefinitionModal">Product Definition</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+</html>

@@ -1,0 +1,48 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div
+        id="locationModal"
+        class="modal fade bd-example-modal-lg"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="locationModal"
+        aria-hidden="true"
+>
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="product-form-title">Location Dashboard</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="table-responsive">
+                        <div class="table-responsive">
+                            <table-location-component th:replace="master-data/table/location-table-component"></table-location-component>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <hr>
+                    <div>
+                        <h5 class="modal-title">Add Location</h5>
+                        <br>
+                        <form id="add-location-form">
+                            <div class="row">
+                                <div class="col-7">
+                                    <input type="text" class="form-control" required id="location-name-input" name="locationName" value=""
+                                           placeholder="Location name ... ">
+                                </div>
+                                <div class="col-3">
+                                    <a id="location-add-btn" class="btn-floating btn-large waves-effect waves-light green"><i class="material-icons">add</i></a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+</html>

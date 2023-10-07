@@ -1,0 +1,48 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div
+        id="manufactureModal"
+        class="modal fade bd-example-modal-lg"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="manufactureModal"
+        aria-hidden="true"
+>
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="product-form-title">Manufacture Dashboard</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="table-responsive">
+                        <div class="table-responsive">
+                            <table-manufacture-component th:replace="master-data/table/manufacture-table-component"></table-manufacture-component>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <hr>
+                    <div>
+                        <h5 class="modal-title">Add Manufacture</h5>
+                        <br>
+                        <form id="add-manufacture-form">
+                            <div class="row">
+                                <div class="col-7">
+                                    <input type="text" class="form-control" required id="manufacturer-name-input" name="manufactureName" value=""
+                                           placeholder="Manufacture name ... ">
+                                </div>
+                                <div class="col-3">
+                                    <a id="manufacture-add-btn" class="btn-floating btn-large waves-effect waves-light green"><i class="material-icons">add</i></a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+</html>

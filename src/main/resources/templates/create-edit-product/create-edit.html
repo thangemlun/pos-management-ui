@@ -1,0 +1,85 @@
+<html xmlns:th="http://www.thymeleaf.org">
+  <div
+    id="createEditModal"
+    class="modal fade bd-example-modal-lg"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createEditModal"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="product-form-title">Create product order</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="poNumber" class="col-form-label fw-bold">Product order number:</label>
+                        <input type="text" class="form-control" required id="poNumber">
+                      </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="imeiNumber" class="col-form-label fw-bold">Imei number:</label>
+                        <input type="text" class="form-control" required id="imeiNumber">
+                      </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="note" class="col-form-label fw-bold">Note:</label>
+                        <input type="text" class="form-control" required id="note">
+                    </div>
+                </div>
+              
+              
+                <div class="row">
+                    <div class= "col">
+                        <div class="form-group">
+                            <label for="storage" class="fw-bold">Storage : </label>
+                            <select id="storage" class="form-control">
+                                <option selected>Choose...</option>
+                                <option>1 Gbs</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class= "col">
+                        <div class="form-group">
+                            <label for="unlockStatus" class="fw-bold">Unlocked status : </label>
+                            <select id="unlockStatus" class="form-control">
+                                <option selected>Choose...</option>
+                                <option>1 Gbs</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class= "col">
+                        <div class="form-group">
+                            <label for="kitted" class="fw-bold">Kitted : </label>
+                            <select id="kitted" class="form-control">
+                                <option selected>Choose...</option>
+                                <option>1 Gbs</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class= "col">
+                        <div class="form-group">
+                            <label for="grade" class="fw-bold">Grade : </label>
+                            <select id="grade" class="form-control">
+                                <option selected>Choose...</option>
+                                <option>1 Gbs</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Submit</button>
+          </div>
+      </div>
+    </div>
+  </div>
+</html>
