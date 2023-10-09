@@ -15,66 +15,60 @@
           </div>
           <div class="modal-body">
               <div class="row">
-                  <form class="col s12">
+                  <form class="col s12" id="create-product-definition-form">
                       <div class="row">
                           <div class="input-field col s12">
-                              <input id="modelName" type="text" class="validate">
+                              <input id="modelName" name ="modelName" value ="" type="text" class="validate">
                               <label for="modelName">Model Name</label>
                           </div>
                       </div>
                       <div class="row">
                           <div class="input-field col s12">
-                              <input id="model" type="text" class="validate">
+                              <input id="model" name ="model" value ="" type="text" class="validate">
                               <label for="model">Model</label>
                           </div>
                       </div>
                       <div class="row">
-                          <div class="input-field col s12 m3">
-                              <select class="icons">
-                                  <option selected="true" style="display: none"></option>
-                                  <option value="" class="circle">Apple</option>
-                                  <option value="" class="circle">LG</option>
-                                  <option value="" class="circle">Samsung</option>
+                          <div class="input-field col s12 m6">
+                              <select class="icons" name ="manufactureId" id="manufacture-select">
                               </select>
                               <label>Manufacture</label>
                           </div>
-                          <div class="input-field col s12 m3">
-                              <select class="icons">
-                                  <option selected="true" style="display: none"></option>
-                                  <option value="" class="left circle">Manchester</option>
-                                  <option value="" class="left circle">Liverpool</option>
-                                  <option value="" class="left circle">London</option>
+                          <div class="input-field col s12 m6">
+                              <select class="icons" name ="locationId" id="location-select">
                               </select>
                               <label>Location</label>
                           </div>
-                          <div class="input-field col s12 m3">
-                              <select class="icons">
-                                  <option selected="true" style="display: none"></option>
-                                  <option value="" class="circle">Tablet</option>
-                                  <option value="" class="circle">Mobile</option>
-                                  <option value="" class="circle">Monitor</option>
+                      </div>
+                      <div class="row">
+                          <div class="input-field col s12 m6">
+                              <select class="icons" name ="categoryId" id="category-select">
                               </select>
                               <label>Category</label>
                           </div>
-                          <div class="input-field col s12 m3">
-                              <select class="icons">
-                                  <option selected="true" style="display: none"></option>
-                                  <option value="" class="left circle">E0123</option>
-                                  <option value="" class="left circle">A1230</option>
-                                  <option value="" class="left circle">B5502</option>
+                          <div class="input-field col s12 m6">
+                              <select class="icons" name ="supplierId" id="supplier-select">
                               </select>
                               <label>Supplier</label>
                           </div>
                       </div>
+                      <div class="row">
+                        <div class="input-field col s12 m4">
+                            <input id="color" name ="color" value ="" type="text" class="validate">
+                            <label for="color">Color</label>
+                        </div>
+                    </div>
                   </form>
               </div>
           </div>
           <div class="modal-footer">
-              <button class="btn white-text waves-effect waves-light blue" name="action">Submit
+              <button class="btn white-text waves-effect waves-light blue" id="btn-create-product-definition">Submit
                   <i class="material-icons right">send</i>
               </button>
           </div>
       </div>
     </div>
   </div>
+  <script th:src="@{/home/js/class/product-definition-class.js}"></script>
+  <script th:src="@{/home/js/create-edit-product-definition.js}"></script>
 </html>

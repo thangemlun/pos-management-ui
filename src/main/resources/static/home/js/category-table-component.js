@@ -1,9 +1,11 @@
 let saveCategoryApi;
 let addCategoryForm;
 let categoryTable;
+let categorySelectBox;
 $(document).ready(() => {
   saveCategoryApi = `${categoryApi}/save`;
   addCategoryForm = $("#add-category-form");
+  categorySelectBox = $("#category-select")
   initCategoryTableConfig();
   getAllCategoryData();
   addCategory();
@@ -49,7 +51,13 @@ const getAllCategoryData = () => {
       if (data && data.length > 0) {
         data.forEach((x) => categories.push(new CategoryModel(x)));
       }
+      categorySelectBox.append(`<option value="" disabled selected>Choose product definition's category</option>`)
+      categories.forEach(x => {
+        let option = `<option value="${x.getId()}" class="left circle">${x.getCategoryName()}</option>`;
+        categorySelectBox.append(option);
+      })
       generateCategoryTable(categories);
+      regenerateSelectBox();
       hideSpinner();
     })
     .fail(() => {

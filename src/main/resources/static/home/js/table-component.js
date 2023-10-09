@@ -1,5 +1,3 @@
-const url = "http://localhost:8080/api/product-definition";
-
 let generateProductionOrderTable = () => {
   var data = [
     [
@@ -26,13 +24,13 @@ let generateProductionOrderTable = () => {
 
 const getAllProductOrderData = () => {
   showSpinner();
-  let api = `${productDefinitionApi}/list`
+  let api = `${productOrderApi}/all`
   const data = {
     page: 0,
-    limit: 10,
+    size: 10,
     sortDirection: "desc",
     properties: null,
   };
-  let postForData = httpPost(data,api)
+  httpGet(api)
   hideSpinner();
 };

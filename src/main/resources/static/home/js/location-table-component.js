@@ -1,9 +1,11 @@
 let saveLocationApi;
 let addLocationForm;
 let table;
+let locationSelectBox;
 $(document).ready(() => {
   saveLocationApi = `${locationApi}/save`;
   addLocationForm = $("#add-location-form");
+  locationSelectBox = $("#location-select");
   initLocationTableConfig();
   getAllLocationData();
   addLocation();
@@ -48,7 +50,15 @@ const getAllLocationData = () => {
       if (data && data.length > 0) {
         data.forEach((x) => locations.push(new LocationModel(x)));
       }
+      //Generate location select box
+      //Import first option for location option
+      locationSelectBox.append(`<option value="" disabled selected>Choose product definition's location</option>`)
+      locations.forEach(x => {
+        let option = `<option value="${x.getId()}" class="left circle">${x.getLocationName()}</option>`;
+        locationSelectBox.append(option);
+      })
       generateLocationTable(locations);
+      regenerateSelectBox();
       hideSpinner();
     })
     .fail(() => {

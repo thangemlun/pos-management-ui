@@ -1,7 +1,9 @@
 let saveSupplierApi;
 let supplierTable;
+let supplierSelectBox;
 $(document).ready(() => {
   saveSupplierApi = `${supplierApi}/save`;
+  supplierSelectBox = $("#supplier-select");
   initSupplierTableConfig();
   addSupplier();
   getAllSupplierData();
@@ -47,7 +49,15 @@ const getAllSupplierData = () => {
       if (data && data.length > 0) {
         data.forEach((x) => suppliers.push(new Supplier(x)));
       }
+      //Init generate supplier select box
+      //import first option for select
+      supplierSelectBox.append(`<option value="" disabled selected>Choose product definition's supplier</option>`)
+      suppliers.forEach(x => {
+        let option = `<option value="${x.getId()}" class="left circle">${x.getSupplierName()}</option>`;
+        supplierSelectBox.append(option);
+      });
       generateSupplierTable(suppliers);
+      regenerateSelectBox();
       hideSpinner();
     })
     .fail(() => {
