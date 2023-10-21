@@ -5,7 +5,8 @@ let categorySelectBox;
 $(document).ready(() => {
   saveCategoryApi = `${categoryApi}/save`;
   addCategoryForm = $("#add-category-form");
-  categorySelectBox = $("#category-select")
+  categorySelectBox =  $("#category-select");
+  console.log(categorySelectBox)
   initCategoryTableConfig();
   getAllCategoryData();
   addCategory();
@@ -38,7 +39,6 @@ const initCategoryTableConfig = () => {
   });
 }
 let generateCategoryTable = (categories) => {
-    
   categoryTable.clear().rows.add(categories).draw();
 };
 
@@ -51,13 +51,14 @@ const getAllCategoryData = () => {
       if (data && data.length > 0) {
         data.forEach((x) => categories.push(new CategoryModel(x)));
       }
+      categorySelectBox.empty();
       categorySelectBox.append(`<option value="" disabled selected>Choose product definition's category</option>`)
       categories.forEach(x => {
         let option = `<option value="${x.getId()}" class="left circle">${x.getCategoryName()}</option>`;
         categorySelectBox.append(option);
       })
       generateCategoryTable(categories);
-      regenerateSelectBox();
+      regenerateSelectBox(categorySelectBox);
       hideSpinner();
     })
     .fail(() => {

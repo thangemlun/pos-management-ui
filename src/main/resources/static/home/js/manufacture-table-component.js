@@ -6,9 +6,9 @@ $(document).ready(() => {
   saveManufactureApi = `${manufactureApi}/save`;
   addManufactureForm = $("#add-manufacture-form");
   selectManufactureBox = $('#manufacture-select');
-  console.log($('select').formSelect())
   initManufactureTableConfig();
   getAllManufactureData();
+  regenerateSelectBox();
   addManufacture();
 });
 
@@ -39,7 +39,6 @@ const initManufactureTableConfig = () => {
   });
 }
 let generateManufactureTable = (manufactures) => {
-    
   manufactureTable.clear().rows.add(manufactures).draw();
 };
 
@@ -54,6 +53,7 @@ const getAllManufactureData = () => {
 
         //Generate Select box for product definition
         //Import first option
+        selectManufactureBox.empty();
         selectManufactureBox.append(`<option value="" disabled selected>Choose product definition's manufacture</option>`)
         manufactures.forEach((x) => {
           let option = `<option value="${x.getId()}" class="left circle">${x.getManufactureName()}</option>`;
@@ -61,7 +61,7 @@ const getAllManufactureData = () => {
         })
       }
       generateManufactureTable(manufactures);
-      regenerateSelectBox();
+      regenerateSelectBox(selectManufactureBox);
       hideSpinner();
     })
     .fail(() => {

@@ -172,7 +172,8 @@ const hideSpinner = () => {
     spinner.style.display = "none";
 }
 
-const regenerateSelectBox = () => {
-  M.AutoInit();
+const regenerateSelectBox = (element) => {
+  element.formSelect();
+  // M.AutoInit();
 }
 

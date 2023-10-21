@@ -75,7 +75,7 @@ class ProductDefinition {
     if (this) {
       httpPost(this, saveProductDefinitionApi).then((resp) => {
         if (resp) {
-          success(resp.status, resp.message);
+          successThenDo(resp.status, resp.message,getAllDataProductDefinition);
           clearForm(formSaveProductDefinitionSelector);
         }
       });

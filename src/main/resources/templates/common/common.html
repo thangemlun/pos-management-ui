@@ -8,27 +8,17 @@
 <div class="container-fluid">
     <div class="row">
         <nav-bar th:replace="fragments/nav-bar"></nav-bar>
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-            <br>
-            <div class="justify-content-center">
-                <a class="btn white-text waves-effect waves-light blue" data-bs-toggle="modal" data-bs-target="#createEditModal">Create Product Order
-                    <i class="material-icons right">playlist_add</i></a>
-                <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createEditModal">
-                    Create Product
-                </button> -->
-            </div>
-            <br>
-            <h2>Product dashboard</h2>
-            <div class="table-responsive">
-                <table-component th:replace="home/table-component"></table-component>
-            </div>
-            <product-form-modal th:replace="create-edit-product/create-edit.html"></product-form-modal>
-            <supplier-modal th:replace="master-data/supplier-component.html"></supplier-modal>
-            <product-definition-modal th:replace="master-data/product-definition-component.html"></product-definition-modal>
-            <location-modal th:replace="master-data/location-component.html"></location-modal>
-            <category-modal th:replace="master-data/category-component.html"></category-modal>
-            <manufacture-modal th:replace="master-data/manufacture-component.html"></manufacture-modal>
-        </main>
+        <div class="spinner-grow" role="status" id="spinner-data">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div th:if="${templateProduct != null}">
+            <main th:replace ="'product/' + ${templateProduct}" class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            </main>
+        </div>
+        <supplier-modal th:replace="master-data/supplier-component.html"></supplier-modal>
+        <location-modal th:replace="master-data/location-component.html"></location-modal>
+        <category-modal th:replace="master-data/category-component.html"></category-modal>
+        <manufacture-modal th:replace="master-data/manufacture-component.html"></manufacture-modal>
     </div>
 </div>
 </body>

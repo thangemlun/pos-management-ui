@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<main th:fragments="product-order-component" class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <br>
+    <div class="d-flex justify-content-between w-100">
+        <a class="btn white-text waves-effect waves-light blue" data-bs-toggle="modal" data-bs-target="#createEditModal">Create Product Order
+            <i class="material-icons right">playlist_add</i></a>
+        <a class="btn black-text waves-effect waves-light white" th:href="@{/home}"> Back<i class="material-icons right">arrow_back</i></a>
+        <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createEditModal">
+            Create Product
+        </button> -->
+    </div>
+    <br>
+    <h2>Product dashboard</h2>
+    <div class="table-responsive">
+        <table-component th:replace="home/table-component"></table-component>
+    </div>
+    <product-form-modal th:replace="create-edit-product/create-edit.html"></product-form-modal>
+    <script th:src="@{/home/js/create-edit.js}"></script>
+    <script th:src="@{/home/js/table-component.js}"></script>
+</main>
+
+</html>

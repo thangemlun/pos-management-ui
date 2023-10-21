@@ -37,7 +37,6 @@ const initLocationTableConfig = () => {
   });
 }
 let generateLocationTable = (locations) => {
-    
   table.clear().rows.add(locations).draw();
 };
 
@@ -52,13 +51,14 @@ const getAllLocationData = () => {
       }
       //Generate location select box
       //Import first option for location option
+      locationSelectBox.empty();
       locationSelectBox.append(`<option value="" disabled selected>Choose product definition's location</option>`)
       locations.forEach(x => {
         let option = `<option value="${x.getId()}" class="left circle">${x.getLocationName()}</option>`;
         locationSelectBox.append(option);
       })
       generateLocationTable(locations);
-      regenerateSelectBox();
+      regenerateSelectBox(locationSelectBox);
       hideSpinner();
     })
     .fail(() => {

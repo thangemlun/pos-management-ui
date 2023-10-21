@@ -13,8 +13,13 @@
                         <li><a data-bs-toggle="modal" data-bs-target="#manufactureModal">Manufacture</a></li>
                     </ul>
                 </li>
-                <li>
-                    <a class="btn waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#productDefinitionModal">Product Definition</a>
+                <li th:switch="${templateProduct != null && templateProduct == 'product-definition-component'}">
+                    <a th:case = "false"
+                       class="btn waves-effect waves-light"
+                       th:href="@{/product-definition}">
+                        Product Definition</a>
+                    <a th:case ="true"
+                       class="btn waves-effect waves-light" disabled>Product Definition</a>
                 </li>
             </ul>
         </div>

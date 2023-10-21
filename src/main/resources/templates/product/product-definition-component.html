@@ -1,0 +1,22 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<main th:fragments="product-definition-component" class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <br>
+        <div class="d-flex justify-content-between w-100">
+            <a class="btn white-text waves-effect waves-light blue" data-bs-toggle="modal"
+               data-bs-target="#createEditProductDefinitionModal">Create Product Definition
+                <i class="material-icons right">playlist_add</i></a>
+            <a class="btn black-text waves-effect waves-light white" th:href="@{/home}"> Back<i class="material-icons right">arrow_back</i></a>
+            <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createEditModal">
+                Create Product
+            </button> -->
+        </div>
+        <br>
+        <h2>Product Definition Dashboard</h2>
+        <div class="table-responsive">
+            <table-product-definition th:replace="master-data/table/product-definition-table-component"></table-product-definition>
+        </div>
+<!--        <product-definition-modal th:replace="master-data/product-definition-component.html"></product-definition-modal>-->
+        <create-edit-product-definition-modal th:replace="create-edit-product/create-edit-product-definition.html"></create-edit-product-definition-modal>
+
+</main>
+</html>

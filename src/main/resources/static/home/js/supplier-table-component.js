@@ -51,13 +51,14 @@ const getAllSupplierData = () => {
       }
       //Init generate supplier select box
       //import first option for select
+      supplierSelectBox.empty();
       supplierSelectBox.append(`<option value="" disabled selected>Choose product definition's supplier</option>`)
       suppliers.forEach(x => {
         let option = `<option value="${x.getId()}" class="left circle">${x.getSupplierName()}</option>`;
         supplierSelectBox.append(option);
       });
       generateSupplierTable(suppliers);
-      regenerateSelectBox();
+      regenerateSelectBox(supplierSelectBox);
       hideSpinner();
     })
     .fail(() => {
