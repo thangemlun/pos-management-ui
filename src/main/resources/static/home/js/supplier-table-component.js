@@ -1,11 +1,15 @@
 let saveSupplierApi;
+let deleteSupplierApi;
 let supplierTable;
 let supplierSelectBox;
 $(document).ready(() => {
   saveSupplierApi = `${supplierApi}/save`;
+  deleteSupplierApi = `${supplierApi}/delete`;
   supplierSelectBox = $("#supplier-select");
   initSupplierTableConfig();
+  checkAllSuppliers();
   addSupplier();
+  deleteSuppliers();
   getAllSupplierData();
 });
 
@@ -16,7 +20,12 @@ const initSupplierTableConfig = () => {
       {
         data: "id",
         className: "text-right",
-        title: "ID",
+        title: `<div class="w-100 justify-content-center">
+                  <label>
+                    <input type="checkbox" id="supplier_check_all"/>
+                    <span></span>               
+                  </label>
+                </div>`,
         type: "string",
       },
       {
@@ -32,9 +41,9 @@ const initSupplierTableConfig = () => {
         type: "string",
       },
     ],
-    columnDefs : supplierDef()
+    columnDefs: supplierDef(),
   });
-}
+};
 
 let generateSupplierTable = (suppliers) => {
   supplierTable.clear().rows.add(suppliers).draw();
@@ -52,10 +61,13 @@ const getAllSupplierData = () => {
       //Init generate supplier select box
       //import first option for select
       supplierSelectBox.empty();
-      supplierSelectBox.append(`<option value="" disabled selected>Choose product definition's supplier</option>`)
-      suppliers.forEach(x => {
+      supplierSelectBox.append(
+        `<option value="" disabled selected>Choose product definition's supplier</option>`
+      );
+      suppliers.forEach((x) => {
         let option = `<option value="${x.getId()}" class="left circle">${x.getSupplierName()}</option>`;
         supplierSelectBox.append(option);
+        masterData.suppliers.push(x);
       });
       generateSupplierTable(suppliers);
       regenerateSelectBox(supplierSelectBox);
@@ -76,6 +88,22 @@ const addSupplier = () => {
     hideSpinner();
   });
 };
+
+const deleteSuppliers = () => {
+  $('#btn-delete-suppliers').click((e) => {
+    e.preventDefault();
+    showSpinner();
+    let supplier = new SupplierComponent();
+    supplier.deleteIds = getAllCheckedValueByClass('supplierCheckBox');
+    console.log(JSON.stringify(supplier.deleteIds));
+    supplier.validateAndDelete();
+    hideSpinner();
+  });
+}
+
+const checkAllSuppliers = () =>{
+  checkAllEvent('#supplier_check_all','supplierCheckBox');
+}
 
 const validateField = (body) => {
   let isValid = true;
@@ -110,16 +138,26 @@ const saveSuppier = (body) => {
 };
 
 const supplierDef = () => {
-  return [{
-               targets:2,
-               render: (data) => {
-                 let editBtn = `<a class="btn-floating waves-effect waves-light blue">
+  return [
+    {
+      targets: 0,
+      render: (data) => {
+        let checkBox = `<label>
+                          <input type="checkbox" class="supplierCheckBox" id="supplier_${data}" value="${data}"/>
+                          <span></span>               
+                        </label>`;
+        return `<div class="w-100 justify-content-center">${checkBox}</div>`;
+      },
+      orderable: false,
+    },
+    {
+      targets: 2,
+      render: (data) => {
+        let editBtn = `<a class="btn-floating waves-effect waves-light blue">
                                     <i class="large material-icons">mode_edit</i>
                                   </a>`;
-                 let deleteBtn = `<a class="btn-floating waves-effect waves-light blue">
-                                      <i class="large material-icons">delete</i>
-                                    </a>`;
-                 return `<div class="w-100 justify-content-center">${editBtn}${deleteBtn}</div>`
-               }
-             }]
+        return `<div class="w-100 justify-content-center">${editBtn}</div>`;
+      },
+    },
+  ];
 };

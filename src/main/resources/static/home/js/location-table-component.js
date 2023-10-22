@@ -4,11 +4,14 @@ let table;
 let locationSelectBox;
 $(document).ready(() => {
   saveLocationApi = `${locationApi}/save`;
+  deleteLocationApi = `${locationApi}/delete`;
   addLocationForm = $("#add-location-form");
   locationSelectBox = $("#location-select");
   initLocationTableConfig();
   getAllLocationData();
   addLocation();
+  deleteLocations();
+  checkAllLocations();
 });
 const initLocationTableConfig = () => {
   table = new DataTable("#location-table", {
@@ -17,8 +20,14 @@ const initLocationTableConfig = () => {
       {
         data: "id",
         className: "text-right",
-        title: "ID",
+        title: `<div class="w-100 justify-content-center">
+                  <label>
+                    <input type="checkbox" id="location_check_all"/>
+                    <span></span>               
+                  </label>
+                </div>`,
         type: "string",
+        orderable : false
       },
       {
         data: "locationName",
@@ -31,11 +40,12 @@ const initLocationTableConfig = () => {
         className: "text-right",
         title: "Action",
         type: "string",
+        orderable : false
       },
     ],
-    columnDefs : locationDef()
+    columnDefs: locationDef(),
   });
-}
+};
 let generateLocationTable = (locations) => {
   table.clear().rows.add(locations).draw();
 };
@@ -52,11 +62,14 @@ const getAllLocationData = () => {
       //Generate location select box
       //Import first option for location option
       locationSelectBox.empty();
-      locationSelectBox.append(`<option value="" disabled selected>Choose product definition's location</option>`)
-      locations.forEach(x => {
+      locationSelectBox.append(
+        `<option value="" disabled selected>Choose product definition's location</option>`
+      );
+      locations.forEach((x) => {
         let option = `<option value="${x.getId()}" class="left circle">${x.getLocationName()}</option>`;
         locationSelectBox.append(option);
-      })
+        masterData.locations.push(x);
+      });
       generateLocationTable(locations);
       regenerateSelectBox(locationSelectBox);
       hideSpinner();
@@ -78,37 +91,66 @@ const addLocation = () => {
   });
 };
 
+const deleteLocations = () => {
+  $('#btn-delete-locations').click((e) => {
+    e.preventDefault();
+    showSpinner();
+    let location = new LocationModel({id : null,locationName:null});
+    location.deleteIds = getAllCheckedValueByClass('locationCheckBox');
+    location.validateAndDelete();
+  })
+}
+
+const checkAllLocations = () =>{
+  checkAllEvent('#location_check_all','locationCheckBox');
+}
+
 const locationDef = () => {
-return [{
-               targets:2,
-               render: (data) => {
-                 let editBtn = `<a class="btn-floating waves-effect waves-light blue">
+  return [
+    {
+      targets: 0,
+      render: (data) => {
+        let checkBox = `<label>
+                        <input type="checkbox" class="locationCheckBox" id="location_${data}" value="${data}"/>
+                        <span></span>               
+                      </label>`;
+        return `<div class="w-100 justify-content-center">${checkBox}</div>`;
+      },
+      orderable: false,
+    },
+    {
+      targets: 2,
+      render: (data) => {
+        let editBtn = `<a class="btn-floating waves-effect waves-light blue">
                                     <i class="large material-icons">mode_edit</i>
                                   </a>`;
-                 let deleteBtn = `<a class="btn-floating waves-effect waves-light blue">
+        let deleteBtn = `<a class="btn-floating waves-effect waves-light blue">
                                       <i class="large material-icons">delete</i>
                                     </a>`;
-                 return `<div class="w-100 justify-content-center">${editBtn}${deleteBtn}</div>`
-               }
-             }]
+        return `<div class="w-100 justify-content-center">${editBtn}${deleteBtn}</div>`;
+      },
+      orderable: false,
+    },
+  ];
 };
 
 class LocationModel {
   id;
   locationName;
   action;
-  constructor({id,locationName}){
+  deleteIds = [] ;
+  constructor({ id, locationName }) {
     this.id = id;
     this.locationName = locationName;
-    this.action = {id,locationName}
+    this.action = { id, locationName };
   }
-  getId(){
+  getId() {
     return this.id;
   }
-  getLocationName(){
+  getLocationName() {
     return this.locationName;
   }
-  setLocationName(locationName){
+  setLocationName(locationName) {
     this.locationName = locationName;
   }
 
@@ -142,4 +184,37 @@ class LocationModel {
       });
     }
   };
+
+  //delete feature
+  validateDelete = () => {
+    let isValidToDelete = true;
+    if(!this.deleteIds.length > 0){
+      warning("Empty checked value", "Please select at least 1 location to delete");
+      isValidToDelete = false;
+    }
+    return isValidToDelete;
+  }
+
+  validateAndDelete = () =>{
+    if(this.validateDelete()) {
+      confirmBox(
+        "Delete locations !",
+        "Do you want to delete locations",
+        this.deleteLocations,
+        this.deleteIds
+      );
+      hideSpinner();
+    }
+  }
+
+  deleteLocations = () => {
+    if(this.deleteIds){
+      httpDelete(this.deleteIds,deleteLocationApi).then((resp) => {
+        if(resp) {
+          successThenDo(resp.status, resp.message, getAllLocationData);
+        }
+      });
+    }
+  }
+
 }

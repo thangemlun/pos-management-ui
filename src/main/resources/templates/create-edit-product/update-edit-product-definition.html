@@ -1,5 +1,5 @@
 <html xmlns:th="http://www.thymeleaf.org">
-  <div
+  <div th:fragments ="update-product-definition-modal"
     id="updateProductDefinitionModal"
     class="modal fade bd-example-modal-lg"
     tabindex="-1"
@@ -18,43 +18,44 @@
                   <form class="col s12" id="update-product-definition-form">
                       <div class="row">
                           <div class="input-field col s12">
-                              <input id="modelName" name ="modelName" value ="" type="text" class="validate">
+                              <input id="id" name ="id" type="hidden">
+                              <input id="modelName" name ="modelName" type="text" class="validate">
                               <label for="modelName">Model Name</label>
                           </div>
                       </div>
                       <div class="row">
                           <div class="input-field col s12">
-                              <input id="model" name ="model" value ="" type="text" class="validate">
+                              <input id="model" name ="model" type="text" class="validate">
                               <label for="model">Model</label>
                           </div>
                       </div>
                       <div class="row">
                           <div class="input-field col s12 m6">
-                              <select class="icons" name ="manufactureId" id="manufacture-select">
+                              <select class="icons" name ="manufactureId" id="pdef-update-manufacture-select">
                               </select>
                               <label>Manufacture</label>
                           </div>
                           <div class="input-field col s12 m6">
-                              <select class="icons" name ="locationId" id="location-select">
+                              <select class="icons" name ="locationId" id="pdef-update-location-select">
                               </select>
                               <label>Location</label>
                           </div>
                       </div>
                       <div class="row">
                           <div class="input-field col s12 m6">
-                              <select class="icons" name ="categoryId" id="category-select">
+                              <select class="icons" name ="categoryId" id="pdef-update-category-select">
                               </select>
                               <label>Category</label>
                           </div>
                           <div class="input-field col s12 m6">
-                              <select class="icons" name ="supplierId" id="supplier-select">
+                              <select class="icons" name ="supplierId" id="pdef-update-supplier-select">
                               </select>
                               <label>Supplier</label>
                           </div>
                       </div>
                       <div class="row">
                         <div class="input-field col s12 m4">
-                            <input id="color" name ="color" value ="" type="text" class="validate">
+                            <input id="color" name ="color" type="text" class="validate">
                             <label for="color">Color</label>
                         </div>
                     </div>
@@ -62,13 +63,11 @@
               </div>
           </div>
           <div class="modal-footer">
-              <button class="btn white-text waves-effect waves-light blue" id="btn-update-product-definition">Submit
+              <button class="btn white-text waves-effect waves-light blue" id="btn-update-product-definition">Update
                   <i class="material-icons right">send</i>
               </button>
           </div>
       </div>
     </div>
   </div>
-  <script th:src="@{/home/js/class/product-definition-class.js}"></script>
-<!--  <script th:src="@{/home/js/create-edit-product-definition.js}"></script>-->
 </html>

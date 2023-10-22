@@ -20,6 +20,17 @@ class ProductDefinition {
     this.categoryId = formBody.categoryId;
   }
 
+  fromUpdateForm(formBody) {
+    this.productDefinitionId = formBody.id;
+    this.modelName = formBody.modelName;
+    this.model = formBody.model;
+    this.color = formBody.color;
+    this.locationId = formBody.locationId;
+    this.supplierId = formBody.supplierId;
+    this.manufactureId = formBody.manufactureId;
+    this.categoryId = formBody.categoryId;
+  }
+
   createValidation = () => {
     let isValid = true;
     if (!this.modelName) {
@@ -60,23 +71,48 @@ class ProductDefinition {
     return isValid;
   };
 
-  validateAndSaveProductDefinition = () => {
+  validateAndSaveProductDefinition = (update) => {
     if (this.createValidation()) {
-      confirmBox(
-        "Add Product Definition !",
-        "Do you want to add Product Definition",
-        this.saveProductDefinition,
-        this
-      );
+      if (!update) {
+        confirmBox(
+          "Add Product Definition !",
+          "Do you want to add Product Definition",
+          this.saveProductDefinition,
+          this
+        );
+      } else {
+        confirmBox(
+          "Update Product Definition !",
+          "Do you want to update Product Definition",
+          this.updateProductDefinition,
+          this
+        );
+      }
     }
   };
 
   saveProductDefinition = () => {
     if (this) {
-      httpPost(this, saveProductDefinitionApi).then((resp) => {
+      httpPost(this, saveProductDefinitionApi).done((resp) => {
         if (resp) {
-          successThenDo(resp.status, resp.message,getAllDataProductDefinition);
+          successThenDo(resp.status, resp.message, getAllDataProductDefinition);
           clearForm(formSaveProductDefinitionSelector);
+          $('#createEditProductDefinitionModal').modal('toggle');
+        }
+      });
+    }
+  };
+
+  updateProductDefinition = () => {
+    if (this) {
+      httpPut(
+        this,
+        `${productDefinitionApi}/${this.productDefinitionId}/update`
+      ).done((resp) => {
+        if (resp) {
+          successThenDo(resp.status, resp.message, getAllDataProductDefinition);
+          clearForm(idUpdatePDefForm);
+          $('#updateProductDefinitionModal').modal('toggle');
         }
       });
     }

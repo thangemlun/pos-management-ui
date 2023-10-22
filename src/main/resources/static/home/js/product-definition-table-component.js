@@ -1,12 +1,12 @@
 let tableProductDefinition;
 let pdefEntries = $("#product-definition-entries-data");
-let pdefPagination = $('#product-definition-pagination');
+let pdefPagination = $("#product-definition-pagination");
 let pdef_size = 10;
 let pdef_page = 0;
-let selectPageSizeId = '#select-page-size';
-const selectPageSize = $(selectPageSizeId)
+let selectPageSizeId = "#select-page-size";
+const selectPageSize = $(selectPageSizeId);
 let firstInitSelect = false;
-let spinnerPDef = $('#spinner-pdef-data')
+let spinnerPDef = $("#spinner-pdef-data");
 $(document).ready(() => {
   configProductDefinitionTable();
   getAllDataProductDefinition();
@@ -16,7 +16,7 @@ $(document).ready(() => {
 const configProductDefinitionTable = () => {
   tableProductDefinition = new DataTable("#product-definition-table", {
     responsive: true,
-    paging:false,
+    paging: false,
     bInfo: false,
     columns: [
       {
@@ -38,25 +38,25 @@ const configProductDefinitionTable = () => {
         type: "string",
       },
       {
-        data: "manufacture",
+        data: "manufacture.manufactureName",
         className: "text-right",
         title: "Manufacture",
         type: "string",
       },
       {
-        data: "category",
+        data: "category.categoryName",
         className: "text-right",
         title: "Category",
         type: "string",
       },
       {
-        data: "location",
+        data: "location.locationName",
         className: "text-right",
         title: "Location",
         type: "string",
       },
       {
-        data: "supplier",
+        data: "supplier.supplierName",
         className: "text-right",
         title: "Supplier",
         type: "string",
@@ -83,12 +83,12 @@ const generateTableProductDef = (productDefinitions) => {
 };
 
 const showPDefSpinner = () => {
-    spinnerPDef.show();
-}
+  spinnerPDef.show();
+};
 
 const hidePDefSpinner = () => {
   spinnerPDef.hide();
-}
+};
 
 const getAllDataProductDefinition = () => {
   showPDefSpinner();
@@ -109,9 +109,9 @@ const getAllDataProductDefinition = () => {
           productDef.fromResponse(x);
           productDefinitions.push(productDef);
         });
-        ProductDefinitionData.generatePageList(pdefPagination,data);
-        ProductDefinitionData.generateEntriesInfo(pdefEntries,data);
-        ProductDefinitionData.generatePageSize(selectPageSize,data);
+        ProductDefinitionData.generatePageList(pdefPagination, data);
+        ProductDefinitionData.generateEntriesInfo(pdefEntries, data);
+        ProductDefinitionData.generatePageSize(selectPageSize, data);
         generateTableProductDef(productDefinitions);
       }
       hidePDefSpinner();
@@ -127,35 +127,32 @@ const productDefinitionColumnDef = () => {
     {
       targets: 8,
       render: (data) => {
-        let editBtn = `<a class="btn-floating waves-effect waves-light blue">
+        let editBtn = `<a class="btn-floating waves-effect waves-light blue" onclick="onUpdateProductDefinition(${data.id})">
                                         <i class="large material-icons">mode_edit</i>
                                       </a>`;
-        let deleteBtn = `<a class="btn-floating waves-effect waves-light blue">
-                                          <i class="large material-icons">delete</i>
-                                        </a>`;
-        return `<div class="w-100 justify-content-center">${editBtn}${deleteBtn}</div>`;
+        return `<div class="w-100 justify-content-center">${editBtn}</div>`;
       },
     },
   ];
 };
 
 const onSelectPDefPage = (page) => {
-  pdef_page = page ;
+  pdef_page = page;
   getAllDataProductDefinition();
-}
+};
 
 const onChangePdefPageSize = () => {
-  $(selectPageSizeId).on('change', function () {
-     pdef_size = $(`${selectPageSizeId} option:selected`).val();
-     getAllDataProductDefinition();
+  $(selectPageSizeId).on("change", function () {
+    pdef_size = $(`${selectPageSizeId} option:selected`).val();
+    getAllDataProductDefinition();
   });
-}
+};
 
 const materialSelect = (element) => {
   return M.FormSelect.getInstance(element);
-}
+};
 
-class ProductDefinitionData{
+class ProductDefinitionData {
   id;
   modelName;
   model;
@@ -177,56 +174,74 @@ class ProductDefinitionData{
     this.color = x.color;
     this.action = x;
   }
-  static generatePageList = (element,data) => {
+  static generatePageList = (element, data) => {
     let currentPage = pdef_page;
-    if(data){
-      if(!data.empty){
+    if (data) {
+      if (!data.empty) {
         element.empty();
         //Init previous button page
-        if(data.totalPages > 1){
-          element.append(data.first ? `<li class="disabled">
-          <a><i class="material-icons">chevron_left</i></a>
-          </li>` :
-          //case not first active 
-          `<li class="waves-effect">
-          <a onClick="onSelectPDefPage(${(pdef_page - 1)})><i class="material-icons">chevron_left</i></a>
-          </li>`);
-        } 
+        if (data.totalPages > 1) {
+          element.append(
+            data.first
+              ? `<li class="disabled">
+                <a><i class="material-icons">chevron_left</i></a>
+                </li>`
+              : //case not first active
+                `<li class="waves-effect">
+                  <a onClick="onSelectPDefPage(${pdef_page - 1})">
+                  <i class="material-icons">chevron_left</i></a>
+                  </li>`
+          );
+        }
         //Init pagination
-        for(let i = 0 ; i < data.totalPages ; i++){
-          element.append(currentPage === i ? `<li class="active"><a>${i+1}</a></li>` : 
-          `<li class="waves-effect"><a onClick="onSelectPDefPage(${i})">${i+1}</a></li>`)
+        for (let i = 0; i < data.totalPages; i++) {
+          element.append(
+            currentPage === i
+              ? `<li class="active"><a>${i + 1}</a></li>`
+              : `<li class="waves-effect"><a onClick="onSelectPDefPage(${i})">${
+                  i + 1
+                }</a></li>`
+          );
         }
         //Init next button page
-        if(data.totalPages > 1){
-          element.append(data.last ? 
-            `<li class="disabled">
+        if (data.totalPages > 1) {
+          element.append(
+            data.last
+              ? `<li class="disabled">
               <a><i class="material-icons">chevron_right</i></a>
-              </li>` : 
-              //case not last active
-            `<li class="waves-effect">
-                <a onClick="onSelectPDefPage(${(pdef_page + 1)})><i class="material-icons">chevron_right</i></a>
-            </li>`);
+              </li>`
+              : //case not last active
+                `<li class="waves-effect">
+                <a onClick="onSelectPDefPage(${
+                  pdef_page + 1
+                })"><i class="material-icons">chevron_right</i></a>
+            </li>`
+          );
         }
       }
     }
-  }
+  };
 
-  static generatePageSize = (element,data) => {
-    let pageSizes = [10,25,50,100];
+  static generatePageSize = (element, data) => {
+    let pageSizes = [10, 25, 50, 100];
     element.empty();
-    if(data){
-      for(let i of pageSizes){
-        let optionPageSize = pdef_size == i ? `<option value="" disabled selected>${i}</option>` : `<option value="${i}">${i}</option>`;
+    if (data) {
+      for (let i of pageSizes) {
+        let optionPageSize =
+          pdef_size == i
+            ? `<option value="" disabled selected>${i}</option>`
+            : `<option value="${i}">${i}</option>`;
         element.append(optionPageSize);
-      }  
-      regenerateSelectBox(element)
+      }
+      regenerateSelectBox(element);
     }
-  }
+  };
 
-  static generateEntriesInfo = (element,data) => {
-    if(data){
-      element.html(`showing ${data.numberOfElements} entries of ${data.totalElements}`)
+  static generateEntriesInfo = (element, data) => {
+    if (data) {
+      element.html(
+        `showing ${data.numberOfElements} entries of ${data.totalElements}`
+      );
     }
-  }
+  };
 }

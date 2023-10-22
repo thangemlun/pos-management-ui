@@ -2,14 +2,19 @@ let saveCategoryApi;
 let addCategoryForm;
 let categoryTable;
 let categorySelectBox;
+let btnDeleteCategories;
+let deleteCategoryApi;
 $(document).ready(() => {
   saveCategoryApi = `${categoryApi}/save`;
+  deleteCategoryApi = `${categoryApi}/delete`
   addCategoryForm = $("#add-category-form");
-  categorySelectBox =  $("#category-select");
-  console.log(categorySelectBox)
+  categorySelectBox = $("#category-select");
+  btnDeleteCategories= $('#btn-delete-categories');
   initCategoryTableConfig();
   getAllCategoryData();
+  checkAllCategories();
   addCategory();
+  deleteCategories();
 });
 
 const initCategoryTableConfig = () => {
@@ -19,7 +24,12 @@ const initCategoryTableConfig = () => {
       {
         data: "id",
         className: "text-right",
-        title: "ID",
+        title: `<div class="w-100 justify-content-center">
+                  <label>
+                    <input type="checkbox" id="category_check_all"/>
+                    <span></span>               
+                  </label>
+                </div>`,
         type: "string",
       },
       {
@@ -35,9 +45,9 @@ const initCategoryTableConfig = () => {
         type: "string",
       },
     ],
-    columnDefs : categoryDef()
+    columnDefs: categoryDef(),
   });
-}
+};
 let generateCategoryTable = (categories) => {
   categoryTable.clear().rows.add(categories).draw();
 };
@@ -52,11 +62,14 @@ const getAllCategoryData = () => {
         data.forEach((x) => categories.push(new CategoryModel(x)));
       }
       categorySelectBox.empty();
-      categorySelectBox.append(`<option value="" disabled selected>Choose product definition's category</option>`)
-      categories.forEach(x => {
+      categorySelectBox.append(
+        `<option value="" disabled selected>Choose product definition's category</option>`
+      );
+      categories.forEach((x) => {
         let option = `<option value="${x.getId()}" class="left circle">${x.getCategoryName()}</option>`;
         categorySelectBox.append(option);
-      })
+        masterData.categories.push(x);
+      });
       generateCategoryTable(categories);
       regenerateSelectBox(categorySelectBox);
       hideSpinner();
@@ -78,37 +91,64 @@ const addCategory = () => {
   });
 };
 
+const deleteCategories = () => {
+  btnDeleteCategories.click((e) => {
+    e.preventDefault();
+    showSpinner();
+    let model = new CategoryModel({id:null,categoryName:null});
+    model.deleteIds = getAllCheckedValueByClass('categoryCheckBox');
+    model.validateAndDelete();
+    hideSpinner();
+  });
+}
+
+const checkAllCategories = () =>{
+  checkAllEvent('#category_check_all','categoryCheckBox');
+}
+
 const categoryDef = () => {
-  return [{
-                 targets:2,
-                 render: (data) => {
-                   let editBtn = `<a class="btn-floating waves-effect waves-light blue">
+  return [
+    {
+      targets: 0,
+      render: (data) => {
+        let checkBox = `<label>
+                          <input type="checkbox" class="categoryCheckBox" id="category_${data}" value="${data}"/>
+                          <span></span>               
+                        </label>`;
+        return `<div class="w-100 justify-content-center">${checkBox}</div>`;
+      },
+      orderable: false
+    },
+    {
+      targets: 2,
+      render: (data) => {
+        let editBtn = `<a class="btn-floating waves-effect waves-light blue">
                                       <i class="large material-icons">mode_edit</i>
                                     </a>`;
-                   let deleteBtn = `<a class="btn-floating waves-effect waves-light blue">
-                                        <i class="large material-icons">delete</i>
-                                      </a>`;
-                   return `<div class="w-100 justify-content-center">${editBtn}${deleteBtn}</div>`
-                 }
-               }]
+        return `<div class="w-100 justify-content-center">${editBtn}</div>`;
+      },
+      orderable: false
+    },
+  ];
 };
 
 class CategoryModel {
   id;
   categoryName;
   action;
-  constructor({id,categoryName}){
+  deleteIds = [];
+  constructor({ id, categoryName }) {
     this.id = id;
     this.categoryName = categoryName;
-    this.action = {id,categoryName}
+    this.action = { id, categoryName };
   }
-  getId(){
+  getId() {
     return this.id;
   }
-  getCategoryName(){
+  getCategoryName() {
     return this.categoryName;
   }
-  setCategoryName(categoryName){
+  setCategoryName(categoryName) {
     this.categoryName = categoryName;
   }
 
@@ -121,6 +161,15 @@ class CategoryModel {
     return isValid;
   };
 
+  validateDelete = () => {
+      let isValidToDelete = true;
+      if(!this.deleteIds.length > 0){
+        warning("Empty checked value", "Please select at least 1 category to delete");
+        isValidToDelete = false;
+      }
+      return isValidToDelete;
+  }
+
   validateAndSave = () => {
     if (this.validateField()) {
       confirmBox(
@@ -132,6 +181,17 @@ class CategoryModel {
     }
   };
 
+  validateAndDelete = () => {
+    if(this.validateDelete()) {
+      confirmBox(
+        "Delete Categories !",
+        "Do you want to delete categories",
+        this.deleteCategories,
+        this.deleteIds
+      );
+    }
+  }
+
   saveCategory = () => {
     if (this) {
       httpPost(this, saveCategoryApi).then((resp) => {
@@ -142,4 +202,14 @@ class CategoryModel {
       });
     }
   };
+
+  deleteCategories = () => {
+    if(this.deleteIds){
+      httpDelete(this.deleteIds,deleteCategoryApi).then((resp) => {
+        if(resp) {
+          successThenDo(resp.status, resp.message, getAllCategoryData);
+        }
+      });
+    }
+  }
 }

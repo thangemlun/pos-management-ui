@@ -6,6 +6,16 @@ let productOrderApi;
 let categoryApi;
 let manufactureApi;
 let spinner;
+const SUPPLIER = 'supplier';
+const LOCATION = 'location';
+const CATEGORY = 'category';
+const MANUFACTURE = 'manufacture';
+const masterData = {
+  categories : [],
+  locations : [],
+  manufactures : [],
+  suppliers : [],
+}
 $(document).ready(function () {
   M.AutoInit();
   host = "http://localhost:8080";
@@ -86,6 +96,7 @@ const successThenDo = (title, message, _f) => {
 
 const buildForm = (formElement) => {
   var data = {};
+  console.log($(formElement))
   var formData = $(formElement).serializeArray();
   $.each(formData, function (i, v) {
     data[`${v.name}`] = v.value;
@@ -127,6 +138,23 @@ const httpGet = (url) => {
   });
 };
 
+const httpGetSync = (url) => {
+  return $.ajax({
+    contentType: "application/json",
+    dataType: "json",
+    method: "GET",
+    url: url,
+    success: function (resp) {
+        console.log(resp);
+    },
+    error: function (resp) {
+      let error = resp.responseJSON;
+      alert(error.message);
+    },
+    async:false
+  });
+};
+
 const httpPut = (body, url) => {
   return $.ajax({
     url: url,
@@ -144,11 +172,12 @@ const httpPut = (body, url) => {
   });
 };
 
-const httpDelete = (url) => {
+const httpDelete = (body,url) => {
   return $.ajax({
     url: url,
     type: "DELETE",
     contentType: "application/json",
+    data: JSON.stringify(body),
     dataType: "json",
     success: function (resp) {
       data = resp;
@@ -177,3 +206,125 @@ const regenerateSelectBox = (element) => {
   // M.AutoInit();
 }
 
+const getAllCheckedValueByClass = (classItem) => {
+  let result = [];
+  $(`.${classItem}:checked`).each(function(){        
+    let values = Number($(this).val());
+    result.push(values);
+  });
+  return result;
+}
+
+const checkAllEvent = (checkBoxSelector,classes) => {
+  $(checkBoxSelector).on('change',(e) => {
+    $(`input:checkbox[class=${classes}]`).prop('checked', e.target.checked);  
+  });  
+}
+
+const initInputField = (idForm,name,value) => {
+  $(`${idForm} input[name=${name}]`).val(value);
+}
+
+const initSelectField = (idForm,name,value) => {
+  $(`${idForm} select[name=${name}]`).val(value);
+}
+
+const initSelectBox = (type,idSelector,value) => {
+  $(idSelector).empty();
+  value = Number(value);
+  switch(type){
+    case MANUFACTURE : {
+      let manufactures = masterData.manufactures;
+      let tempOptions = [];
+      let options = [];
+      let firstOption = `<option value="" disabled selected>Choose product definition's ${MANUFACTURE}</option>`;
+      let noneSelected = true;
+      for(let i = 0; i < manufactures.length ; i ++){
+        let x = manufactures[i];
+        let option = `<option value="${x.getId()}" class="left circle">${x.getManufactureName()}</option>`
+        if(x.id == value){
+          option = `<option value="${x.getId()}" selected>${x.getManufactureName()}</option>`
+          noneSelected = false;
+        }
+        tempOptions.push(option)
+      }
+      if(noneSelected){
+        options.push(firstOption)
+      }
+      tempOptions.forEach(op => options.push(op));
+      // Push to select box
+      options.forEach(op => $(idSelector).append(op));
+      break;
+    }
+    case LOCATION : {
+      let locations = masterData.locations;
+      let tempOptions = [];
+      let options = [];
+      let firstOption = `<option value="" disabled selected>Choose product definition's ${LOCATION}</option>`;
+      let noneSelected = true;
+      for(let i = 0; i < locations.length; i ++){
+        let x = locations[i];
+        let option = `<option value="${x.getId()}" class="left circle">${x.getLocationName()}</option>`
+        if(x.id == value){
+          option = `<option value="${x.getId()}" selected>${x.getLocationName()}</option>`
+          noneSelected = false;
+        }
+        tempOptions.push(option)
+      }
+      if(noneSelected){
+        options.push(firstOption)
+      }
+      tempOptions.forEach(op => options.push(op));
+      // Push to select box
+      options.forEach(op => $(idSelector).append(op));
+      break;
+    }
+    case CATEGORY : {
+      let categories = masterData.categories;
+      let tempOptions = [];
+      let options = [];
+      let firstOption = `<option value="" disabled selected>Choose product definition's ${CATEGORY}</option>`;
+      let noneSelected = true;
+      for(let i = 0; i < categories.length; i ++){
+        let x = categories[i];
+        let option = `<option value="${x.getId()}" class="left circle">${x.getCategoryName()}</option>`
+        if(x.id == value){
+          option = `<option value="${x.getId()}" selected>${x.getCategoryName()}</option>`
+          noneSelected = false;
+        }
+        tempOptions.push(option)
+      }
+      if(noneSelected){
+        options.push(firstOption)
+      }
+      tempOptions.forEach(op => options.push(op));
+      // Push to select box
+      options.forEach(op => $(idSelector).append(op));
+      break;
+    }
+    case SUPPLIER : {
+      let suppliers = masterData.suppliers;
+      let tempOptions = [];
+      let options = [];
+      let firstOption = `<option value="" disabled selected>Choose product definition's ${SUPPLIER}</option>`;
+      let noneSelected = true;
+      for(let i = 0; i < suppliers.length; i ++){
+        let x = suppliers[i];
+        let option = `<option value="${x.getId()}" class="left circle">${x.getSupplierName()}</option>`
+        if(x.id == value){
+          option = `<option value="${x.getId()}" selected>${x.getSupplierName()}</option>`
+          noneSelected = false;
+        }
+        tempOptions.push(option)
+      }
+      if(noneSelected){
+        options.push(firstOption)
+      }
+      tempOptions.forEach(op => options.push(op));
+      // Push to select box
+      options.forEach(op => $(idSelector).append(op));
+      break;
+    }
+  }
+  regenerateSelectBox($(idSelector));
+}
