@@ -223,6 +223,11 @@ const checkAllEvent = (checkBoxSelector,classes) => {
 
 const initInputField = (idForm,name,value) => {
   $(`${idForm} input[name=${name}]`).val(value);
+  changeInput(name);
+}
+
+const changeInput = (idElement) => {
+  $(`label[for='${idElement}']`).addClass('active');
 }
 
 const initSelectField = (idForm,name,value) => {
