@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: POS-MANAGEMENT-UI
+  cloud:
+    gateway:
+      httpclient:
+        connect-timeout: 3600000
+        response-timeout: 3600000s

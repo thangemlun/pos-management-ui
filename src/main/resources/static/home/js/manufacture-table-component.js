@@ -210,6 +210,7 @@ class ManufactureModel {
         this.deleteIds
       );
     }
+    hideSpinner();
   };
 
   deleteManufactures = () => {

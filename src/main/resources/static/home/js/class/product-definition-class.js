@@ -1,8 +1,6 @@
 class ProductDefinition {
   productDefinitionId;
   modelName;
-  model;
-  color;
   locationId;
   supplierId;
   manufactureId;
@@ -12,8 +10,6 @@ class ProductDefinition {
   fromCreateForm(formBody) {
     this.productDefinitionId = null;
     this.modelName = formBody.modelName;
-    this.model = formBody.model;
-    this.color = formBody.color;
     this.locationId = formBody.locationId;
     this.supplierId = formBody.supplierId;
     this.manufactureId = formBody.manufactureId;
@@ -21,10 +17,8 @@ class ProductDefinition {
   }
 
   fromUpdateForm(formBody) {
-    this.productDefinitionId = formBody.id;
+    this.productDefinitionId = formBody.sku;
     this.modelName = formBody.modelName;
-    this.model = formBody.model;
-    this.color = formBody.color;
     this.locationId = formBody.locationId;
     this.supplierId = formBody.supplierId;
     this.manufactureId = formBody.manufactureId;
@@ -35,16 +29,6 @@ class ProductDefinition {
     let isValid = true;
     if (!this.modelName) {
       warning("Missing field", "Model name can not be empty");
-      isValid = false;
-      return;
-    }
-    if (!this.model) {
-      warning("Missing field", "Model can not be empty");
-      isValid = false;
-      return;
-    }
-    if (!this.color) {
-      warning("Missing field", "Color can not be empty");
       isValid = false;
       return;
     }
@@ -107,7 +91,7 @@ class ProductDefinition {
     if (this) {
       httpPut(
         this,
-        `${productDefinitionApi}/${this.productDefinitionId}/update`
+        `${productDefinitionApi}/update`
       ).done((resp) => {
         if (resp) {
           successThenDo(resp.status, resp.message, getAllDataProductDefinition);

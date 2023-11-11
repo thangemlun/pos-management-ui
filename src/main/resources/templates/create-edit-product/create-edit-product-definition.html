@@ -1,75 +1,58 @@
 <html xmlns:th="http://www.thymeleaf.org">
-  <div
-    id="createEditProductDefinitionModal"
-    class="modal fade bd-example-modal-lg"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="createEditProductDefinitionModal"
-    aria-hidden="true"
-  >
+<div id="createEditProductDefinitionModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+    aria-labelledby="createEditProductDefinitionModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="product-form-title">Create Product Definition</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-              <div class="row">
-                  <form class="col s12" id="create-product-definition-form">
-                      <div class="row">
-                          <div class="input-field col s12">
-                              <input id="modelName" name ="modelName" value ="" type="text" class="validate">
-                              <label for="modelName">Model Name</label>
-                          </div>
-                      </div>
-                      <div class="row">
-                          <div class="input-field col s12">
-                              <input id="model" name ="model" value ="" type="text" class="validate">
-                              <label for="model">Model</label>
-                          </div>
-                      </div>
-                      <div class="row">
-                          <div class="input-field col s12 m6">
-                              <select class="icons" name ="manufactureId" id="manufacture-select">
-                              </select>
-                              <label>Manufacture</label>
-                          </div>
-                          <div class="input-field col s12 m6">
-                              <select class="icons" name ="locationId" id="location-select">
-                              </select>
-                              <label>Location</label>
-                          </div>
-                      </div>
-                      <div class="row">
-                          <div class="input-field col s12 m6">
-                              <select class="icons" name ="categoryId" id="category-select">
-                              </select>
-                              <label>Category</label>
-                          </div>
-                          <div class="input-field col s12 m6">
-                              <select class="icons" name ="supplierId" id="supplier-select">
-                              </select>
-                              <label>Supplier</label>
-                          </div>
-                      </div>
-                      <div class="row">
-                        <div class="input-field col s12 m4">
-                            <input id="color" name ="color" value ="" type="text" class="validate">
-                            <label for="color">Color</label>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="product-form-title">Create Product Definition</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form class="col s12" id="create-product-definition-form">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="modelName" name="modelName" value="" type="text" class="validate">
+                                <label for="modelName">Model Name</label>
+                            </div>
                         </div>
-                    </div>
-                  </form>
-              </div>
-          </div>
-          <div class="modal-footer">
-              <button class="btn white-text waves-effect waves-light blue" id="btn-create-product-definition">Submit
-                  <i class="material-icons right">send</i>
-              </button>
-          </div>
-      </div>
+                        <div class="row">
+                            <div class="input-field col s12 m6">
+                                <select class="icons" name="manufactureId" id="manufacture-select">
+                                </select>
+                                <label>Manufacture</label>
+                            </div>
+                            <div class="input-field col s12 m6">
+                                <select class="icons" name="locationId" id="location-select">
+                                </select>
+                                <label>Location</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12 m6">
+                                <select class="icons" name="categoryId" id="category-select">
+                                </select>
+                                <label>Category</label>
+                            </div>
+                            <div class="input-field col s12 m6">
+                                <select class="icons" name="supplierId" id="supplier-select">
+                                </select>
+                                <label>Supplier</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn white-text waves-effect waves-light blue" id="btn-create-product-definition">Submit
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </div>
     </div>
-  </div>
-  <script th:src="@{/home/js/class/product-definition-class.js}"></script>
-  <script th:src="@{/home/js/service/product-definitrion-service.js}"></script>
-  <script th:src="@{/home/js/create-edit-product-definition.js}"></script>
+</div>
+<script th:src="@{/home/js/class/product-definition-class.js}"></script>
+<script th:src="@{/home/js/service/product-definitrion-service.js}"></script>
+<script th:src="@{/home/js/create-edit-product-definition.js}"></script>
+
 </html>

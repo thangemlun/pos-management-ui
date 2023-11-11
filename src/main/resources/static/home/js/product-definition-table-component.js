@@ -20,21 +20,15 @@ const configProductDefinitionTable = () => {
     bInfo: false,
     columns: [
       {
-        data: "id",
+        data: "sku",
         className: "text-right",
-        title: "ID",
+        title: "SKU",
         type: "string",
       },
       {
         data: "modelName",
         className: "text-right",
         title: "Model Name",
-        type: "string",
-      },
-      {
-        data: "model",
-        className: "text-right",
-        title: "Model",
         type: "string",
       },
       {
@@ -62,9 +56,15 @@ const configProductDefinitionTable = () => {
         type: "string",
       },
       {
-        data: "color",
+        data: "createdTime",
         className: "text-right",
-        title: "Color",
+        title: "Created Time",
+        type: "string",
+      },
+      {
+        data: "updatedTime",
+        className: "text-right",
+        title: "Updated Time",
         type: "string",
       },
       {
@@ -72,9 +72,14 @@ const configProductDefinitionTable = () => {
         className: "text-right",
         title: "Action",
         type: "string",
+        render: (data) => {
+          let editBtn = `<a class="btn-floating waves-effect waves-light blue" onclick="onUpdateProductDefinition(${data.sku})">
+                                          <i class="large material-icons">mode_edit</i>
+                                        </a>`;
+          return `<div class="w-100 justify-content-center">${editBtn}</div>`;
+        },
       },
-    ],
-    columnDefs: productDefinitionColumnDef(),
+    ]
   });
 };
 
@@ -122,20 +127,6 @@ const getAllDataProductDefinition = () => {
     });
 };
 
-const productDefinitionColumnDef = () => {
-  return [
-    {
-      targets: 8,
-      render: (data) => {
-        let editBtn = `<a class="btn-floating waves-effect waves-light blue" onclick="onUpdateProductDefinition(${data.id})">
-                                        <i class="large material-icons">mode_edit</i>
-                                      </a>`;
-        return `<div class="w-100 justify-content-center">${editBtn}</div>`;
-      },
-    },
-  ];
-};
-
 const onSelectPDefPage = (page) => {
   pdef_page = page;
   getAllDataProductDefinition();
@@ -153,25 +144,25 @@ const materialSelect = (element) => {
 };
 
 class ProductDefinitionData {
-  id;
+  sku;
   modelName;
-  model;
   location;
   manufacture;
   category;
   supplier;
-  color;
+  createdTime;
+  updatedTime;
   action;
   constructor() {}
   fromResponse(x) {
-    this.id = x.id;
+    this.sku = x.sku;
     this.modelName = x.modelName;
-    this.model = x.model;
     this.location = x.location;
     this.manufacture = x.manufacture;
     this.category = x.category;
     this.supplier = x.supplier;
-    this.color = x.color;
+    this.createdTime = moment(x.createdTime).tz(LOCAL_SYSTEM_ZONE).format('YYYY-MM-DD HH:mm:ss');
+    this.updatedTime = moment(x.updatedTime).tz(LOCAL_SYSTEM_ZONE).format('YYYY-MM-DD HH:mm:ss');
     this.action = x;
   }
   static generatePageList = (element, data) => {
