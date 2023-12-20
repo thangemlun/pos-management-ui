@@ -16,7 +16,9 @@ public class TokenCache {
 
     public static String getToken(String loginString){
         if(userToken.containsKey(loginString)){
-            return userToken.get(loginString);
+            String authorizeToken = userToken.get(loginString);
+            System.out.println(String.format("USER ID : %s - %s",loginString,authorizeToken));
+            return authorizeToken;
         }else {
             return null;
         }
